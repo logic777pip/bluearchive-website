@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+	<style type="text/css">
+		.mainbox{
+			background-color: #FAFAFA;
+			box-shadow: 0 0 4px #555555;
+			border-radius: 8px;
+			width: 40vw;
+			height: 40vh;
+			margin: 25vh auto;
+			background: url(./img/bg.jpg) no-repeat center;
+		}
+		form label{
+			font-family: "微软雅黑";
+			font-style: italic;
+			display: inline-block;
+		}
+		form{
+			position: absolute;
+			top: 40%;
+			left: 45%;
+			display: block;
+		}
+		.input{
+			border-radius: 4px;
+			display: block;
+			background-color: rgba(0,0,0,0.1);
+		}
+		.mainbox h2{
+			padding-top: 3vh;
+			text-align: center;
+		}
+		.mainbox p{
+			text-align: center;
+		}
+		button{
+			background-color: rgba(0,0,0,0.5);
+			align-items: center;
+		}
+		
+	</style>
+</head>
+<body>
+	<div class="mainbox">
+		<h2>欢迎来到基沃托斯</h2>
+		<p>基沃托斯居民登记系统</p>
+		<form action="" method="">
+			<label>usermane</label>
+			<input class="input" id="username" />
+			<label>password</label>
+			<input class="input" id="password" />
+			<button type="button" id="login">登录</button>
+			<button type="button">重置</button>
+		</form>
+	</div>
+	<script type="text/javascript">
+		const url = "http://127.0.0.1:3000/login"
+		
+		document.getElementById('login').addEventListener('tap',function(){
+			let username = document.getElementById('username').value
+			let password = document.getElementById('password').value
+			if (!username || !password) {
+			    mui.alert('用户名或密码不能为空');
+			    return;
+			}
+			mui.ajax(url,{
+				data:{
+					username,
+					password
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				success:function(data){
+					if(data.code === 200){
+						alert('欢迎用户'+username)
+						window.localStorage.setItem('token', data.token); 
+						window.location.href = "./main.html"
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					alert('username or password error')
+				}
+			});
+		})
+	</script>
+</body>
+</html>
